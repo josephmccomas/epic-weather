@@ -4,6 +4,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="Codeup Weather Map Project" content="Interactive weather map providing a 5-day forecast">
     <meta name="author" content="Joseph McComas">
+    <script src='https://api.mapbox.com/mapbox-gl-js/v2.12.0/mapbox-gl.js'></script>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v2.12.0/mapbox-gl.css' rel='stylesheet'/>
     <link rel="stylesheet" href="css/stylesheet.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Exo+2:wght@200&family=Space+Grotesk&display=swap');
@@ -12,55 +14,130 @@
     <title>Epic Weather Map</title>
 </head>
 <body>
-<script src="https://code.jquery.com/jquery-3.6.3.js" integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM=" crossorigin="anonymous"></script>
-<script src='https://api.mapbox.com/mapbox-gl-js/v2.12.0/mapbox-gl.js'></script>
+<script src="https://code.jquery.com/jquery-3.6.3.js" integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM="
+        crossorigin="anonymous"></script>
 <script src="js/mapbox-geocoder-utils.js"></script>
 <script src="js/keys.js"></script>
 
 <!-- PAGE START -->
-<div class="h-container">
-    <div class="header">
-        <h1>
-            World's Most Epic Weather Map
-        </h1>
+
+
+
+<div class="main">
+    <div class="h-container">
+        <div class="header">
+            <h1>
+                World's Most Epic Weather Map
+            </h1>
+        </div>
     </div>
-</div>
+    <div class="container">
+        <div class="app twelve columns">
+            <h1 class="headline">Weather Forecast <span class="location"></span></h1>
 
-<div class="container-fluid">
+            <div class="row">
+                <div class="eight columns offset-by-two">
+                    <div class="weather-info">
+                        <div class="weather-info-animation">
+                            <canvas id="animated-icon" width="220" height="220"></canvas>
+                        </div>
+                    </div>
+                </div>
 
-    <div class="form-group">
-        <label for="address-input" class="form-label"></label>
-        <input id="address-input" class="form-input" type="text" placeholder="Enter an address">
-    </div>
+                <div class="row">
+                    <div class="eight columns offset-by-two">
+                        <div class="weather-info-text">
+                            <div class="one-third column">
+                                <span class="local-time">~~:~~</span>
+                            </div>
+                            <div class="one-third column">
+                                <div class="temperature">
+                                    <span class="temp-celsius">°C</span>
+                                    <span class="temp-fahrenheit hidden">F</span>
+                                </div>
+                            </div>
+                            <div class="one-third column">
+                                <span class="weather-condition">~~~</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-    <!--make a container in which to show the map-->
-    <div id="my-map"></div>
-</div>
+                <div class="row">
+                    <div class="search-weather eight columns offset-by-two">
+                        <h3>Find a Forecast</h3>
+                        <form id="my-form" action="">
+                            <input type="search" placeholder="Search for location or keyword" class="find-forcast">
+                            <button class="btn-search">Search</button>
+                        </form>
+                    </div>
+                </div>
 
-<script>
-    $(document).ready(function () {
-        mapboxgl.accessToken = MAPBOX_API_KEY;
+                <div class="row">
+                    <div class="footer">
+                        <p>Designed and coded by <a href="https://ayoisaiah.github.io">Ayo Isaiah</a></p>
+                    </div>
+                </div>
 
-        const map = new mapboxgl.Map({
-            container: "my-map",
-            style: "mapbox://styles/mapbox/satellite-v9",
-            zoom: 8,
-            center: [-98.4946, 29.4252]
-        });
-        map.addControl(new mapboxgl.NavigationControl());
 
-        $("#search-btn").click(function (){
-            const address = $("#address-input").val();
-            geocode(address, MAPBOX_API_KEY).then(function (result) {
-                new mapboxgl.Marker(result);
-                map.flyTo( {
-                    center: result,
-                    zoom: 10
-                });
-            })
-        })
-    });
-</script>
+            </div>  <!-- app -->
+        </div> <!-- container -->
+    </div> <!-- main -->
+<!--<layer id="layer1">-->
+<!--    <div class="loader-anim">-->
+<!--        <h1>Loading Map</h1>-->
+<!--        <div class='loader' id="sc-loader"></div>-->
+<!--    </div>-->
+<!--</layer>-->
+<!--<layer id="layer2">-->
+<!--<div class="container-fluid">-->
+
+<!--    <div class="form-group">-->
+<!--        <label for="address-input" class="form-label"></label>-->
+<!--        <input id="address-input" class="form-input" type="text" placeholder="Enter an address">-->
+<!--        <button id="search-btn" onClick="addLayerSpinner()">Search</button>-->
+<!--    </div>-->
+<!--    <div class="map-container">-->
+<!--        <div id="my-map" style="width: 800px; height: 600px;"></div>-->
+<!--</div>-->
+<!--</layer>-->
+<!--</div>-->
+<!--<script>-->
+<!--    $(document).ready(function () {-->
+<!--        mapboxgl.accessToken = MAPBOX_API_KEY;-->
+
+<!--        const map = new mapboxgl.Map({-->
+<!--            container: "my-map",-->
+<!--            style: "mapbox://styles/mapbox/satellite-streets-v12",-->
+<!--            zoom: 8,-->
+<!--            center: [-98.4946, 29.4252]-->
+<!--        });-->
+<!--        map.addControl(new mapboxgl.NavigationControl());-->
+
+<!--        $("#search-btn").click(function () {-->
+<!--            const address = $("#address-input").val();-->
+<!--            geocode(address, MAPBOX_API_KEY).then(function (result) {-->
+<!--                new mapboxgl.Marker(result);-->
+<!--                map.easeTo({center: result, zoom: 18, duration: 5000});-->
+<!--            })-->
+<!--        })-->
+<!--        // $("#layer1").hide(function (){-->
+<!--        // })-->
+
+
+
+<!--        // $("#address-input").click(function () {-->
+<!--        //     const address = $("#address-input").val();-->
+<!--        //     geocode(address, MAPBOX_API_KEY).then(function (result) {-->
+<!--        //         new mapboxgl.Marker(result);-->
+<!--        //         map.flyTo({-->
+<!--        //             center: result,-->
+<!--        //             zoom: 10-->
+<!--        //         });-->
+<!--        //     })-->
+<!--        // })-->
+<!--    });-->
+<!--</script>-->
 </body>
 </html>
 
