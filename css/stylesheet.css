@@ -1,0 +1,35 @@
+* {
+    background-color: rgba(26,26,26,1);
+    font-family: 'Exo 2', sans-serif;
+    color: ivory;
+}
+.h-container {
+    background-image: url("../img/weatherbanner.png");
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.header {
+    background: transparent;
+}
+h1 {
+    background: transparent;
+    backdrop-filter: contrast(50%);
+    text-shadow: 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black;
+}
+.form-group {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2em 0em;
+}
+#my-map {
+    height: 50%;
+    width: 70%;
+}
+#address-input {
+    border: 1px solid #25d3ef;
+    background-color: ivory;
+    color: black;
+    font-weight: bolder;
+}

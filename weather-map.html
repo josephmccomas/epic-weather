@@ -5,23 +5,67 @@
     <meta name="Codeup Weather Map Project" content="Interactive weather map providing a 5-day forecast">
     <meta name="author" content="Joseph McComas">
     <link rel="stylesheet" href="css/stylesheet.css">
-    <script src="https://code.jquery.com/jquery-3.6.3.js" integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM=" crossorigin="anonymous"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Exo+2:wght@200&family=Space+Grotesk&display=swap');
+    </style>
     <meta charset="UTF-8">
     <title>Epic Weather Map</title>
 </head>
 <body>
+<script src="https://code.jquery.com/jquery-3.6.3.js" integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM=" crossorigin="anonymous"></script>
 <script src='https://api.mapbox.com/mapbox-gl-js/v2.12.0/mapbox-gl.js'></script>
 <script src="js/mapbox-geocoder-utils.js"></script>
 <script src="js/keys.js"></script>
 
 <!-- PAGE START -->
+<div class="h-container">
+    <div class="header">
+        <h1>
+            World's Most Epic Weather Map
+        </h1>
+    </div>
+</div>
 
+<div class="container-fluid">
 
+    <div class="form-group">
+        <label for="address-input" class="form-label"></label>
+        <input id="address-input" class="form-input" type="text" placeholder="Enter an address">
+    </div>
+
+    <!--make a container in which to show the map-->
+    <div id="my-map"></div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        mapboxgl.accessToken = MAPBOX_API_KEY;
+
+        const map = new mapboxgl.Map({
+            container: "my-map",
+            style: "mapbox://styles/mapbox/satellite-v9",
+            zoom: 8,
+            center: [-98.4946, 29.4252]
+        });
+        map.addControl(new mapboxgl.NavigationControl());
+
+        $("#search-btn").click(function (){
+            const address = $("#address-input").val();
+            geocode(address, MAPBOX_API_KEY).then(function (result) {
+                new mapboxgl.Marker(result);
+                map.flyTo( {
+                    center: result,
+                    zoom: 10
+                });
+            })
+        })
+    });
+</script>
 </body>
 </html>
 
 <!--NOTES
 https://api.weather.gov/points/{lat},{lon}
-
+mapbox://styles/mapbox/satellite-v9
 
 -->
