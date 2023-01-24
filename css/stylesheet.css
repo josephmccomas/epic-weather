@@ -10,10 +10,10 @@
 */
 /* Base files. */
 /*! normalize.css v3.0.3 | MIT License | github.com/necolas/normalize.css */
-/*html {*/
-/*    font-family: sans-serif;*/
-/*    -ms-text-size-adjust: 100%;*/
-/*    -webkit-text-size-adjust: 100%; }*/
+html {
+    font-family: "Exo 2", "sans-serif";
+    -ms-text-size-adjust: 100%;
+    -webkit-text-size-adjust: 100%; }
 
 body {
     margin: 0; }
@@ -68,7 +68,8 @@ dfn {
 
 h1 {
     font-size: 2em;
-    margin: 0.67em 0; }
+    margin: 0;
+    padding-top: 0; }
 
 mark {
     background: #ff0;
@@ -204,7 +205,6 @@ body {
     font-size: 1.5em;
     line-height: 1.6;
     font-weight: 400;
-    /*font-family: "Raleway", "HelveticaNeue", "Helvetica Neue", Helvetica, Arial, sans-serif;*/
     color: #222; }
 
 a {
@@ -364,7 +364,9 @@ p {
 
     .twelve.columns {
         width: 100%;
-        margin-left: 0; }
+        margin-left: 0;
+        padding-top: 0;
+    }
 
     .one-third.column {
         width: 30.66667%; }
@@ -668,11 +670,11 @@ body {
     height: 100vh; }
 
 .headline {
-    text-align: center;
+    text-align: left;
     margin-top: 0.5em;
-    padding: 0px 30px;
+    padding: 0;
     font-weight: 700;
-    font-family: 'Lato', sans-serif; }
+    font-family: 'Exo 2', sans-serif; }
 
 .weather-info {
     text-align: center; }

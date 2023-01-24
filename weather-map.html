@@ -22,67 +22,63 @@
 <!-- PAGE START -->
 
 
-
 <div class="main">
     <div class="h-container">
         <div class="header">
             <h1>
-                World's Most Epic Weather Map
             </h1>
         </div>
     </div>
     <div class="container">
         <div class="app twelve columns">
-            <h1 class="headline">Weather Forecast <span class="location"></span></h1>
-
+            <div class="twelve columns">
+                <div>
+                    <h1 class="four columns headline">World's Most Epic Weather Map <span class="location"></span></h1>
+                </div>
+                <div class="search-weather eight columns">
+                    <h3>Find a Forecast</h3>
+                    <form id="my-form" action="">
+                        <input type="search" placeholder="Search for location or keyword" class="find-forecast">
+                        <button class="search-btn">Search</button>
+                    </form>
+                </div>
+            </div>
             <div class="row">
-                <div class="eight columns offset-by-two">
+                <div class="four columns">
                     <div class="weather-info">
                         <div class="weather-info-animation">
                             <canvas id="animated-icon" width="220" height="220"></canvas>
                         </div>
                     </div>
                 </div>
-
-                <div class="row">
-                    <div class="eight columns offset-by-two">
-                        <div class="weather-info-text">
-                            <div class="one-third column">
-                                <span class="local-time">~~:~~</span>
+                <div class="seven columns offset-by-one">
+                    <div class="weather-info-text">
+                        <div class="one-third column">
+                            <span class="local-time">~~:~~</span>
+                        </div>
+                        <div class="one-third column">
+                            <div class="temperature">
+                                <span class="temp-celsius hidden">°C</span>
+                                <span class="temp-fahrenheit">F</span>
                             </div>
-                            <div class="one-third column">
-                                <div class="temperature">
-                                    <span class="temp-celsius">°C</span>
-                                    <span class="temp-fahrenheit hidden">F</span>
-                                </div>
-                            </div>
-                            <div class="one-third column">
-                                <span class="weather-condition">~~~</span>
-                            </div>
+                        </div>
+                        <div class="one-third column">
+                            <span class="weather-condition">~~~</span>
                         </div>
                     </div>
                 </div>
+            </div>
+            <div class="twelve columns">
 
-                <div class="row">
-                    <div class="search-weather eight columns offset-by-two">
-                        <h3>Find a Forecast</h3>
-                        <form id="my-form" action="">
-                            <input type="search" placeholder="Search for location or keyword" class="find-forcast">
-                            <button class="btn-search">Search</button>
-                        </form>
-                    </div>
+                <div class="six columns offset-by-two">
+                    <div id="my-map" style="width: 800px; height: 600px;"></div>
                 </div>
+            </div>
+        </div>  <!-- app -->
+    </div> <!-- container -->
+</div> <!-- main -->
+</div>
 
-                <div class="row">
-                    <div class="footer">
-                        <p>Designed and coded by <a href="https://ayoisaiah.github.io">Ayo Isaiah</a></p>
-                    </div>
-                </div>
-
-
-            </div>  <!-- app -->
-        </div> <!-- container -->
-    </div> <!-- main -->
 <!--<layer id="layer1">-->
 <!--    <div class="loader-anim">-->
 <!--        <h1>Loading Map</h1>-->
@@ -102,42 +98,41 @@
 <!--</div>-->
 <!--</layer>-->
 <!--</div>-->
-<!--<script>-->
-<!--    $(document).ready(function () {-->
-<!--        mapboxgl.accessToken = MAPBOX_API_KEY;-->
+<script>
+    $(document).ready(function () {
+        mapboxgl.accessToken = MAPBOX_API_KEY;
 
-<!--        const map = new mapboxgl.Map({-->
-<!--            container: "my-map",-->
-<!--            style: "mapbox://styles/mapbox/satellite-streets-v12",-->
-<!--            zoom: 8,-->
-<!--            center: [-98.4946, 29.4252]-->
-<!--        });-->
-<!--        map.addControl(new mapboxgl.NavigationControl());-->
+        const map = new mapboxgl.Map({
+            container: "my-map",
+            style: "mapbox://styles/mapbox/satellite-streets-v12",
+            zoom: 8,
+            center: [-98.4946, 29.4252]
+        });
+        map.addControl(new mapboxgl.NavigationControl());
 
-<!--        $("#search-btn").click(function () {-->
-<!--            const address = $("#address-input").val();-->
-<!--            geocode(address, MAPBOX_API_KEY).then(function (result) {-->
-<!--                new mapboxgl.Marker(result);-->
-<!--                map.easeTo({center: result, zoom: 18, duration: 5000});-->
-<!--            })-->
-<!--        })-->
-<!--        // $("#layer1").hide(function (){-->
-<!--        // })-->
+        $("#search-btn").click(function () {
+            const address = $("#address-input").val();
+            geocode(address, MAPBOX_API_KEY).then(function (result) {
+                new mapboxgl.Marker(result);
+                map.easeTo({center: result, zoom: 18, duration: 5000});
+            })
+        })
+        // $("#layer1").hide(function (){
+        // })
 
 
-
-<!--        // $("#address-input").click(function () {-->
-<!--        //     const address = $("#address-input").val();-->
-<!--        //     geocode(address, MAPBOX_API_KEY).then(function (result) {-->
-<!--        //         new mapboxgl.Marker(result);-->
-<!--        //         map.flyTo({-->
-<!--        //             center: result,-->
-<!--        //             zoom: 10-->
-<!--        //         });-->
-<!--        //     })-->
-<!--        // })-->
-<!--    });-->
-<!--</script>-->
+        // $("#address-input").click(function () {
+        //     const address = $("#address-input").val();
+        //     geocode(address, MAPBOX_API_KEY).then(function (result) {
+        //         new mapboxgl.Marker(result);
+        //         map.flyTo({
+        //             center: result,
+        //             zoom: 10
+        //         });
+        //     })
+        // })
+    });
+</script>
 </body>
 </html>
 
