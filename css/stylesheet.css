@@ -738,6 +738,10 @@ button:hover {
 @media screen and (max-width: 1050px) {
     input[type="search"] {
         width: 100%; } }
+#geocoder-container > div {
+    min-width: 50%;
+    margin-left: 25%;
+}
 
 /*# sourceMappingURL=style.css.map */
 

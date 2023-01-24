@@ -14,6 +14,8 @@
     <title>Epic Weather Map</title>
 </head>
 <body>
+<script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.min.js"></script>
+<link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.css" type="text/css">
 <script src="https://code.jquery.com/jquery-3.6.3.js" integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM="
         crossorigin="anonymous"></script>
 <script src="js/mapbox-geocoder-utils.js"></script>
@@ -35,13 +37,16 @@
                 <div>
                     <h1 class="four columns headline">World's Most Epic Weather Map <span class="location"></span></h1>
                 </div>
-                <div class="search-weather eight columns">
-                    <h3>Find a Forecast</h3>
-                    <form id="my-form" action="">
-                        <input type="search" placeholder="Search for location or keyword" class="find-forecast">
-                        <button class="search-btn">Search</button>
-                    </form>
+                <div class="six columns">
+                    <div id="my-map" style="width: 800px; height: 600px;"></div>
                 </div>
+<!--                <div class="search-weather eight columns">-->
+<!--                    <h3>Find a Forecast</h3>-->
+<!--                    <form id="my-form" action="">-->
+<!--                        <input type="search" placeholder="Search for location or keyword" class="find-forecast">-->
+<!--                        <button class="search-btn">Search</button>-->
+<!--                    </form>-->
+<!--                </div>-->
             </div>
             <div class="row">
                 <div class="four columns">
@@ -70,9 +75,7 @@
             </div>
             <div class="twelve columns">
 
-                <div class="six columns offset-by-two">
-                    <div id="my-map" style="width: 800px; height: 600px;"></div>
-                </div>
+
             </div>
         </div>  <!-- app -->
     </div> <!-- container -->
@@ -108,6 +111,15 @@
             zoom: 8,
             center: [-98.4946, 29.4252]
         });
+        const geocoder = new MapboxGeocoder({
+            accessToken: mapboxgl.accessToken,
+            marker: {
+                color: 'orange'
+            },
+            mapboxgl: mapboxgl
+        });
+
+        map.addControl(geocoder);
         map.addControl(new mapboxgl.NavigationControl());
 
         $("#search-btn").click(function () {

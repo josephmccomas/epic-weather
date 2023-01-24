@@ -1,6 +1,26 @@
 "use strict";
 
-//wIcons
+
+
+// START GEOCODE
+let latitude;
+let longitude;
+
+$.ajax("https://api.mapbox.com/geocoding/v5/{endpoint}/{search_text}.json", {
+    type: "GET",
+    data: {
+        coordinates: "latitude", "longitude"
+    },
+});
+
+}
+// END GEOCODE
+
+// START WEATHER
+
+// END WEATHER
+
+// START wIcons
 
 const rain = import("img/rain.svg");
 const clearDay = import("img/clear-day.svg");
@@ -16,13 +36,54 @@ wIcons.add("animated-icon", clearDay);
 
 wIcons.play();
 
+let weather = json.weather[0].description;
+
+if(weather.indexOf("rain") >= 0) {
+    wIcons.set("animated-icon", rain);
+}
+
+else if (weather.indexOf("sunny") >= 0) {
+    wIcons.set("animated-icon", clearDay);
+}
+
+else if (weather.indexOf("clear") >= 0) {
+    if (timeHour >= 7 && timeHour < 20) {
+        wIcons.set("animated-icon", clearDay);
+    }
+
+    else {
+        wIcons.set("animated-icon", clearNight);
+    }
+}
+
+else if (weather.indexOf("cloud") >= 0) {
+    if (timeHour >= 7 && timeHour < 20) {
+        wIcons.set("animated-icon", partlyCloudyDay);
+    }
+
+    else {
+        wIcons.set("animated-icon", partlyCloudyNight);
+    }
+}
+
+else if (weather.indexOf("thunderstorm") >= 0) {
+    wIcons.set("animated-icon", thunderstorm);
+}
+
+else if (weather.indexOf("snow") >= 0) {
+    wIcons.set("animated-icon", snow);
+}
+
+// END wIcons
+
 geocode("San Antonio", API_TOKEN_HERE).then(function(results) {
     // do something with results
+
 })
 function geocode(search, token) {
     let baseUrl = 'https://api.mapbox.com';
     let endPoint = '/geocoding/v5/mapbox.places/';
-    return fetch(baseUrl + endPoint + encodeURIComponent(search) + '.json' + "?" + 'access_token=' + token)
+    return fetch(baseUrl + endPoint + encodeURIComponent(search) + '.json' + "?" + MAPBOX_API_KEY + token)
         .then(function(res) {
             return res.json();
             // to get all the data from the request, comment out the following three lines...
@@ -30,6 +91,23 @@ function geocode(search, token) {
             return data.features[0].center;
         });
 }
+
+// Initialize the GeolocateControl.
+const geolocate = new mapboxgl.GeolocateControl({
+    positionOptions: {
+        enableHighAccuracy: true
+    },
+    trackUserLocation: true
+});
+// Add the control to the map.
+map.addControl(geolocate);
+// Set an event listener that fires
+// when a geolocate event occurs.
+geolocate.on('geolocate', () => {
+    console.log('A geolocate event has occurred.');
+});
+// geometry.coordinates
+// https://api.mapbox.com/geocoding/v5/{endpoint}/{search_text}.json
 
 //Some Global variables
 
@@ -44,7 +122,7 @@ function updateWeather (json) {
 
     //AJAX request
 
-    $.getJSON('https://api.weather.gov/openapi.json' + latitude + '&lng=' + longitude, function(timezone) {
+    $.getJSON('https://api.weather.gov/points/' + {latitude}, + {longitude}, function(timezone) {
         let rawTimeZone = JSON.stringify(timezone);
         let parsedTimeZone = JSON.parse(rawTimeZone);
         let dateTime = parsedTimeZone.time;
@@ -68,44 +146,6 @@ function updateWeather (json) {
     //Update Weather animation based on the returned weather description
 
 
-    let weather = json.weather[0].description;
-
-    if(weather.indexOf("rain") >= 0) {
-        wIcons.set("animated-icon", rain);
-    }
-
-    else if (weather.indexOf("sunny") >= 0) {
-        wIcons.set("animated-icon", clearDay);
-    }
-
-    else if (weather.indexOf("clear") >= 0) {
-        if (timeHour >= 7 && timeHour < 20) {
-            wIcons.set("animated-icon", clearDay);
-        }
-
-        else {
-            wIcons.set("animated-icon", clearNight);
-        }
-    }
-
-    else if (weather.indexOf("cloud") >= 0) {
-        if (timeHour >= 7 && timeHour < 20) {
-            wIcons.set("animated-icon", partlyCloudyDay);
-        }
-
-        else {
-            wIcons.set("animated-icon", partlyCloudyNight);
-        }
-    }
-
-    else if (weather.indexOf("thunderstorm") >= 0) {
-        wIcons.set("animated-icon", thunderstorm);
-    }
-
-    else if (weather.indexOf("snow") >= 0) {
-        wIcons.set("animated-icon", snow);
-    }
-}
 
 //Check for Geoloaction support
 
@@ -155,42 +195,3 @@ if (navigator.geolocation) {
 else {
     alert("Geolocation is not supported by your browser, download the latest Chrome or Firefox to use this app");
 }
-
-
-
-
-// /***
-//  * geocode is a method to search for coordinates based on a physical address and return
-//  * @param {string} search is the address to search for the geocoded coordinates
-//  * @param {string} token is your API token for MapBox
-//  * @returns {Promise} a promise containing the latitude and longitude as a two element array
-//  *
-//  * EXAMPLE:
-//  *
-//
-//
-// /***
-//  * reverseGeocode is a method to search for a physical address based on inputted coordinates
-//  * @param {object} coordinates is an object with properties "lat" and "lng" for latitude and longitude
-//  * @param {string} token is your API token for MapBox
-//  * @returns {Promise} a promise containing the string of the closest matching location to the coordinates provided
-//  *
-//  * EXAMPLE:
-//  *
-//  *  reverseGeocode({lat: 32.77, lng: -96.79}, API_TOKEN_HERE).then(function(results) {
-//  *      // do something with results
-//  *  })
-//  *
-//  */
-// function reverseGeocode(coordinates, token) {
-//     let baseUrl = 'https://api.mapbox.com';
-//     let endPoint = '/geocoding/v5/mapbox.places/';
-//     return fetch(baseUrl + endPoint + coordinates.lng + "," + coordinates.lat + '.json' + "?" + 'access_token=' + token)
-//         .then(function(res) {
-//             return res.json();
-//         })
-//         // to get all the data from the request, comment out the following three lines...
-//         .then(function(data) {
-//             return data.features[0].place_name;
-//         });
-// }
