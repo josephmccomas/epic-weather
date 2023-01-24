@@ -103,6 +103,7 @@
 <!--</layer>-->
 <!--</div>-->
 <script>
+    $(document).ready(function () {
     mapboxgl.accessToken = MAPBOX_API_KEY;
     const map = new mapboxgl.Map({
         container: 'my-map', // Container ID
@@ -154,6 +155,7 @@
         geocoder.on('result', (event) => {
             map.getSource('single-point').setData(event.result.geometry);
         });
+    });
     });
 </script>
 </body>
