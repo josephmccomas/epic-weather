@@ -15,7 +15,9 @@
 </head>
 <body>
 <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.min.js"></script>
-<link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.css" type="text/css">
+<link rel="stylesheet"
+      href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.css"
+      type="text/css">
 <script src="https://code.jquery.com/jquery-3.6.3.js" integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM="
         crossorigin="anonymous"></script>
 <script src="js/mapbox-geocoder-utils.js"></script>
@@ -40,13 +42,13 @@
                 <div class="six columns">
                     <div id="my-map" style="width: 800px; height: 600px;"></div>
                 </div>
-<!--                <div class="search-weather eight columns">-->
-<!--                    <h3>Find a Forecast</h3>-->
-<!--                    <form id="my-form" action="">-->
-<!--                        <input type="search" placeholder="Search for location or keyword" class="find-forecast">-->
-<!--                        <button class="search-btn">Search</button>-->
-<!--                    </form>-->
-<!--                </div>-->
+                <!--                <div class="search-weather eight columns">-->
+                <!--                    <h3>Find a Forecast</h3>-->
+                <!--                    <form id="my-form" action="">-->
+                <!--                        <input type="search" placeholder="Search for location or keyword" class="find-forecast">-->
+                <!--                        <button class="search-btn">Search</button>-->
+                <!--                    </form>-->
+                <!--                </div>-->
             </div>
             <div class="row">
                 <div class="four columns">
@@ -80,7 +82,6 @@
         </div>  <!-- app -->
     </div> <!-- container -->
 </div> <!-- main -->
-</div>
 
 <!--<layer id="layer1">-->
 <!--    <div class="loader-anim">-->
@@ -102,47 +103,57 @@
 <!--</layer>-->
 <!--</div>-->
 <script>
-    $(document).ready(function () {
-        mapboxgl.accessToken = MAPBOX_API_KEY;
+    mapboxgl.accessToken = MAPBOX_API_KEY;
+    const map = new mapboxgl.Map({
+        container: 'my-map', // Container ID
+        style: 'mapbox://styles/mapbox/satellite-streets-v12', // Map style to use
+        center: [-98.4946, 29.4252], // Starting position [lng, lat]
+        zoom: 12, // Starting zoom level
+        marker: false,
+    });
 
-        const map = new mapboxgl.Map({
-            container: "my-map",
-            style: "mapbox://styles/mapbox/satellite-streets-v12",
-            zoom: 8,
-            center: [-98.4946, 29.4252]
+    // const marker = new mapboxgl.Marker() // Initialize a new marker
+    //     .setLngLat([-98.4946, 29.4252]) // Marker [lng, lat] coordinates
+    //     .addTo(map); // Add the marker to the map
+
+    const geocoder = new MapboxGeocoder({
+// Initialize the geocoder
+        accessToken: mapboxgl.accessToken, // Set the access token
+        mapboxgl: mapboxgl, // Set the mapbox-gl instance
+        marker: true, // Do not use the default marker style
+        placeholder: 'Search', // Placeholder text for the search bar
+    });
+
+    // Add the geocoder to the map
+    map.addControl(geocoder);
+    map.addControl(new mapboxgl.NavigationControl());
+
+    // After the map style has loaded on the page,
+    // add a source layer and default styling for a single point
+    map.on('load', () => {
+        map.addSource('single-point', {
+            'type': 'geojson',
+            'data': {
+                'type': 'FeatureCollection',
+                'features': []
+            }
         });
-        const geocoder = new MapboxGeocoder({
-            accessToken: mapboxgl.accessToken,
-            marker: {
-                color: 'orange'
-            },
-            mapboxgl: mapboxgl
+
+        map.addLayer({
+            'id': 'point',
+            'source': 'single-point',
+            'type': 'circle',
+            'paint': {
+                'circle-radius': 10,
+                'circle-color': '#448ee4'
+            }
         });
 
-        map.addControl(geocoder);
-        map.addControl(new mapboxgl.NavigationControl());
-
-        $("#search-btn").click(function () {
-            const address = $("#address-input").val();
-            geocode(address, MAPBOX_API_KEY).then(function (result) {
-                new mapboxgl.Marker(result);
-                map.easeTo({center: result, zoom: 18, duration: 5000});
-            })
-        })
-        // $("#layer1").hide(function (){
-        // })
-
-
-        // $("#address-input").click(function () {
-        //     const address = $("#address-input").val();
-        //     geocode(address, MAPBOX_API_KEY).then(function (result) {
-        //         new mapboxgl.Marker(result);
-        //         map.flyTo({
-        //             center: result,
-        //             zoom: 10
-        //         });
-        //     })
-        // })
+// Listen for the `result` event from the Geocoder // `result` event is triggered when a user makes a selection
+//  Add a marker at the result's coordinates
+        geocoder.on('result', (event) => {
+            map.getSource('single-point').setData(event.result.geometry);
+        });
     });
 </script>
 </body>
@@ -152,4 +163,53 @@
 https://api.weather.gov/points/{lat},{lon}
 mapbox://styles/mapbox/satellite-v9
 
+-->
+
+// $(document).ready(function () {
+//     mapboxgl.accessToken = MAPBOX_API_KEY;
+//
+//     const map = new mapboxgl.Map({
+//         container: "my-map",
+//         style: "mapbox://styles/mapbox/satellite-streets-v12",
+//         zoom: 8,
+//         center: [-98.4946, 29.4252]
+//     });
+//     const geocoder = new MapboxGeocoder({
+//         accessToken: mapboxgl.accessToken,
+//         marker: {
+//             color: 'orange'
+//         },
+//         mapboxgl: mapboxgl
+//     });
+//
+//     map.addControl(geocoder);
+//     map.addControl(new mapboxgl.NavigationControl());
+//
+//     $.ajax("https://api.mapbox.com/geocoding/v5/{endpoint}/{coordinates}.json", {
+//         type: "GET",
+//         coordinates: [latitude, longitude]
+//     }).done();
+//
+//     $("#search-btn").click(function () {
+//         const address = $("#address-input").val();
+//         geocode(address, MAPBOX_API_KEY).then(function (result) {
+//             new mapboxgl.Marker(result);
+//             map.easeTo({center: result, zoom: 18, duration: 5000});
+//         })
+//     })
+// $("#layer1").hide(function (){
+// })
+
+
+// $("#address-input").click(function () {
+//     const address = $("#address-input").val();
+//     geocode(address, MAPBOX_API_KEY).then(function (result) {
+//         new mapboxgl.Marker(result);
+//         map.flyTo({
+//             center: result,
+//             zoom: 10
+//         });
+//     })
+// })
+// });
 -->
