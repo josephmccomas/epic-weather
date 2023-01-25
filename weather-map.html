@@ -38,21 +38,22 @@
 <script src="js/keys.js"></script>
 <!-- END SCRIPTS REF -->
 <!-- PAGE START -->
-<div class="col-12 align-items-start" id="page-header" style="font-family: 'Exo 2'">
-    <h1>World's Most Epic Weather Page!</h1>
+<div class="grid text-center align-items-between" id="page-header" style="font-family: 'Exo 2'">
+    <div><h1>World's Most Epic Weather Page!</h1></div>
+    <div><input type="text" placeholder="Search.."></div>
 </div>
-<div class="col-12 wrap-nowrap">
-    <div class="col-6" id="map">
-        <!-- placeholder -->
+<div class="row justify-content-start flex-wrap-nowrap">
+    <div class="col-8" id="map">
+        <!-- DIV placeholder -->
     </div>
-    <div class="col-5 offset-1" id="forecast-box">
-        <div class="">
-            <div class="align-self-start" id="day0">Test</div>
-            <div class="align-self-start" id="day1">Test</div>
-            <div class="align-self-start" id="day2">Test</div>
-            <div class="align-self-start" id="day3">Test</div>
-            <div class="align-self-start" id="day4">Test</div>
-            <div class="align-self-start" id="day5">Test</div>
+    <div class="col-3" id="forecast-box">
+        <div class="col">
+            <div class="align-self-start" id="day0" style="font-family: 'Exo 2'; color: ivory">Test</div>
+            <div class="align-self-start" id="day1" style="font-family: 'Exo 2'; color: ivory">Test</div>
+            <div class="align-self-start" id="day2" style="font-family: 'Exo 2'; color: ivory">Test</div>
+            <div class="align-self-start" id="day3" style="font-family: 'Exo 2'; color: ivory">Test</div>
+            <div class="align-self-start" id="day4" style="font-family: 'Exo 2'; color: ivory">Test</div>
+            <div class="align-self-start" id="day5" style="font-family: 'Exo 2'; color: ivory">Test</div>
         </div>
     </div>
 </div>
@@ -68,8 +69,26 @@
             style: "mapbox://styles/mapbox/satellite-streets-v12", // style URL or style object
         });
         map.addControl(new mapboxgl.NavigationControl());
-    })
 
+        $.get("http://api.openweathermap.org/data/2.5/weather", {
+            APPID: OPEN_WEATHER_APPID,
+            q:     "San Antonio, US",
+            units: "imperial",
+        }).done(function(data) {
+            console.log(data);
+        });
+
+    });// END DOCUMENT
+// NOTES
+//     main:
+//     feels_like:
+//     humidity:
+//     pressure:
+//     temp:
+//     temp_max:
+//     temp_min:
+//     weather: Array[1]
+// END NOTES
 </script>
 </body>
 </html>
