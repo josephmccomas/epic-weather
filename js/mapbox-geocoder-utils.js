@@ -10,19 +10,17 @@ function geocode(search, token) {
     return fetch(baseUrl + endPoint + encodeURIComponent(search) + '.json' + "?" + MAPBOX_API_KEY + token)
         .then(function (res) {
             return res.json();
-            // to get all the data from the request, comment out the following three lines...
         }).then(function (data) {
             return data.features[0].center;
         });
 }
+
 geocode();
+
 function updateWeather(json) {
     longitude = json.coord.longitude;
     latitude = json.coord.latitude;
-
-    //AJAX request
-
-    $.getJSON('https://api.weather.gov/points/' + {latitude}, +{longitude}, function (timezone) {
+    $.getJSON('https://api.weather.gov/points/' + {latitude}, + {longitude}, function (timezone) {
         let rawTimeZone = JSON.stringify(timezone);
         let parsedTimeZone = JSON.parse(rawTimeZone);
         let dateTime = parsedTimeZone.time;
@@ -30,9 +28,6 @@ function updateWeather(json) {
         $(".local-time").html(timeFull); //Update local time
         timeHour = dateTime.substr(-5, 2);
     });
-
-    //Update Weather parameters and location
-
     $(".weather-condition").html(json.weather[0].description);
     let temp = [(json.main.temp - 273.15).toFixed(0) + "°C", (1.8 * (json.main.temp - 273.15) + 32).toFixed(0) + "F"];
     $(".temp-celsius").html(temp[0]);
@@ -43,7 +38,6 @@ function updateWeather(json) {
     });
     $(".location").html("for " + json.name);
     if (navigator.geolocation) {
-        //Return the user's longitude and latitude on page load using HTML5 geolocation API
         window.onload = function () {
             let currentPosition;
 
@@ -51,11 +45,10 @@ function updateWeather(json) {
                 currentPosition = position;
                 latitude = currentPosition.coords.latitude;
                 longitude = currentPosition.coords.longitude;
-                //AJAX request
                 $.getJSON("https://api.weather.gov/openapi.json" + latitude + "&lon=" + longitude, function (data) {
                     let rawJson = JSON.stringify(data);
                     let json = JSON.parse(rawJson);
-                    updateWeather(json); //Update Weather parameters
+                    updateWeather(json);
                 });
             }
 
@@ -72,7 +65,7 @@ function updateWeather(json) {
         $.getJSON("https://api.weather.gov/openapi.json" + latitude + "&lon=" + longitude, function (data) {
             let rawJson = JSON.stringify(data);
             let json = JSON.parse(rawJson);
-            updateWeather(json); //Update Weather parameters
+            updateWeather(json);
         });
     });
 // END WEATHER
