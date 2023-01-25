@@ -5,16 +5,22 @@
     <meta name="Codeup Weather Map Project" content="Interactive weather map providing a 5-day forecast">
     <meta name="author" content="Joseph McComas">
     <link href='https://api.mapbox.com/mapbox-gl-js/v2.12.0/mapbox-gl.css' rel='stylesheet'/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+
     <link rel="stylesheet" href="css/stylesheet.css">
     <style>
         @import url("https://fonts.googleapis.com/css2?family=Exo+2:wght@200&family=Space+Grotesk&display=swap");
+
         body {
             margin: 0;
             padding: 0;
         }
+
         #map {
-            width: 800px;
-            height: 600px;
+            height: 500px;
+            width: 600px;
+            border: 1px solid darkgrey;
         }
     </style>
     <meta charset="UTF-8">
@@ -25,29 +31,44 @@
 <script src="https://code.jquery.com/jquery-3.6.3.js" integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM="
         crossorigin="anonymous"></script>
 <script src='https://api.mapbox.com/mapbox-gl-js/v2.12.0/mapbox-gl.js'></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+        crossorigin="anonymous"></script>
+
 <script src="js/keys.js"></script>
 <!-- END SCRIPTS REF -->
 <!-- PAGE START -->
-<div class="row page-header">
+<div class="col-12 align-items-start" id="page-header" style="font-family: 'Exo 2'">
     <h1>World's Most Epic Weather Page!</h1>
 </div>
-<div class="row map-row">
-    <div id="map"></div>
+<div class="col-12 wrap-nowrap">
+    <div class="col-6" id="map">
+        <!-- placeholder -->
+    </div>
+    <div class="col-5 offset-1" id="forecast-box">
+        <div class="">
+            <div class="align-self-start" id="day0">Test</div>
+            <div class="align-self-start" id="day1">Test</div>
+            <div class="align-self-start" id="day2">Test</div>
+            <div class="align-self-start" id="day3">Test</div>
+            <div class="align-self-start" id="day4">Test</div>
+            <div class="align-self-start" id="day5">Test</div>
+        </div>
+    </div>
 </div>
-
 <script src='https://api.mapbox.com/mapbox-gl-js/v2.12.0/mapbox-gl.js'></script>
 <script>
-$(document).ready(function (){
-    mapboxgl.accessToken = MAPBOX_API_KEY;
+    $(document).ready(function () {
+        mapboxgl.accessToken = MAPBOX_API_KEY;
 
-    const map = new mapboxgl.Map({
+        const map = new mapboxgl.Map({
             container: "map", // container ID
             center: [-98.4946, 29.4252], // starting position [lng, lat]
             zoom: 10, // starting zoom
             style: "mapbox://styles/mapbox/satellite-streets-v12", // style URL or style object
         });
         map.addControl(new mapboxgl.NavigationControl());
-})
+    })
 
 </script>
 </body>
