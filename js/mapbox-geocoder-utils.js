@@ -2,7 +2,7 @@
 
 /***
  * geocode is a method to search for coordinates based on a physical address and return
- * @param {string} search is the address to search for the geocoded coordinates
+ * @param {{results: (*|jQuery)}} search is the address to search for the geocoded coordinates
  * @param {string} token is your API token for MapBox
  * @returns {Promise} a promise containing the latitude and longitude as a two element array
  *

@@ -39,9 +39,11 @@
 <script src="js/keys.js"></script>
 <!-- END SCRIPTS REF -->
 <!-- PAGE START -->
-<div class="grid text-center align-items-between" id="page-header" style="font-family: 'Exo 2'">
+<div class="grid text-center" id="page-header" style="font-family: 'Exo 2'">
     <div><h1>World's Most Epic Weather Page!</h1></div>
-    <div><form><input type="text" id="search" name="search" placeholder="Search.."></form></div>
+    <div>
+        <form><input type="text" id="search" name="search" placeholder="Search.."></form>
+    </div>
 </div>
 <div class="row justify-content-start flex-wrap-nowrap">
     <div class="col-8" id="map">
@@ -70,34 +72,30 @@
             zoom: 10, // starting zoom
             style: "mapbox://styles/mapbox/satellite-streets-v12", // style URL or style object
         });
+
         map.addControl(new mapboxgl.NavigationControl());
         let results = $("#search").get(0);
 
-        geocode(results, MAPBOX_API_KEY).then(function(results) {
-            map.setCenter(results);
-            map.setZoom(20);
-        });
+        function searchMarker() {
+            geocode("https://api.mapbox.com/geocoding/v5/mapbox.places", MAPBOX_API_KEY).then(function (results) {
+                const marker = new mapboxgl.Marker();
+                marker.setLngLat(results);
+                marker.addTo(map);
+                map.setCenter(results);
+                map.setZoom(20);
+            })
+            }
+            searchMarker(results);
 
+            $.get("http://api.openweathermap.org/data/2.5/weather", {
+                APPID: OPEN_WEATHER_APPID,
+                q: results,
+                units: "imperial",
+            }).done(function (data) {
+                console.log(data);
+            });
 
-        $.get("http://api.openweathermap.org/data/2.5/weather", {
-            APPID: OPEN_WEATHER_APPID,
-            q: results,
-            units: "imperial",
-        }).done(function(data) {
-            console.log(data);
-        });
-
-    });// END DOCUMENT
-// NOTES
-//     main:
-//     feels_like:
-//     humidity:
-//     pressure:
-//     temp:
-//     temp_max:
-//     temp_min:
-//     weather: Array[1]
-// END NOTES
+    });// END $DOCUMENT
 </script>
 </body>
 </html>
@@ -106,4 +104,12 @@
 https://api.weather.gov/points/{lat},{lon}
 mapbox://styles/mapbox/satellite-v9
 
+//     main:
+//     feels_like:
+//     humidity:
+//     pressure:
+//     temp:
+//     temp_max:
+//     temp_min:
+//     weather: Array[1]
 -->
