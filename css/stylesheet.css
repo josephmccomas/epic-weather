@@ -7,3 +7,15 @@ html {
 body {
     background-color: #1e2023;
 }
+.header {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+.forecastElements {
+    display: flex;
+    justify-content: space-around;
+}
+#map {
+    border: 1px solid darkgray;
+}

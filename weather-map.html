@@ -7,7 +7,7 @@
     <link href='https://api.mapbox.com/mapbox-gl-js/v2.12.0/mapbox-gl.css' rel='stylesheet'/>
     <link rel="stylesheet" href="css/stylesheet.css">
     <style>
-
+        @import url('https://fonts.googleapis.com/css2?family=Exo+2:wght@200&family=Space+Grotesk&display=swap');
     </style>
     <meta charset="UTF-8">
     <title>Epic Weather Map</title>
@@ -21,20 +21,34 @@
         integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
         crossorigin="anonymous"></script>
 <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.min.js"></script>
-<link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.css" type="text/css">
+<link rel="stylesheet"
+      href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.css"
+      type="text/css">
 <script src="js/keys.js"></script>
 <script src="js/mapbox-geocoder-utils.js"></script>
 <!-- END SCRIPTS REF -->
 <!--
 1: Set up map page
 2: Set up pin on default location
-3: Set AJAX request formatted
-4: Pull lat/long from AJAX response
+3: Get weather data from Openweather
+4: Pull lat/long from Openweather response
 5: get forecast from response data index 0, 8, 16, …
 6: update DOM with forecast elements
 -->
 <!-- PAGE START -->
-<div>
+<div class="header">
+    <h1>World's Most Epic Weather Map 2.0!</h1>
+</div>
+<div class="forecastRow">
+    <div class="forecastElements">
+        <div class="day0"></div>
+        <div class="day1">Test</div>
+        <div class="day2">Test</div>
+        <div class="day3">Test</div>
+        <div class="day4">Test</div>
+        <div class="day5">Test</div>
+    </div>
+</div>
 <div id="map" style="height: 400px; width: 600px"></div>
 </div>
 <script src='https://api.mapbox.com/mapbox-gl-js/v2.12.0/mapbox-gl.js'></script>
@@ -48,39 +62,43 @@
             zoom: 10,
             center: [-98.4916, 29.4252]
         });
+
         // Retrieves lat/long coords for locations
         function dropPin(search) {
-            geocode(search, MAPBOX_API_KEY).then(function (result){
-            dropPinWithCoords(result);
+            geocode(search, MAPBOX_API_KEY).then(function (result) {
                 // console.log(result)
             })
         }
+
         // Sets markers based on coordinates
-        function dropPinWithCoords(coords){
+        function dropPinWithCoords(coords) {
             const marker = new mapboxgl.Marker()
                 .setLngLat(coords)
                 .addTo(map)
             forecast(coords, marker);
         }
+
         // Gets forecast data based on coordinates
         function forecast(coords, marker) {
-            $.get(`https://api.openweathermap.org/data/2.5/forecast`, {
-                    APPID: OPEN_WEATHER_APPID,
-                    lat:    coords[1],
-                    lon:   coords[0],
-                    units: "imperial"
+            $.get("http://api.openweathermap.org/data/2.5/weather", {
+                APPID: OPEN_WEATHER_APPID,
+                lat: coords[1],
+                    lon: coords[0],
                 }
-            ).done(function(data) {
-                // console.log(data);
-                updateWeatherHTML(data);
+            ).done(function (data) {
+                console.log(data)
+                // updateWeatherHTML(data);
             })
         }
+
         // Updates weather data
-        function updateWeatherHTML(forecastData){
-            console.log(forecastData);
-        }
+        // function updateWeatherHTML(forecastData) {
+        //
+        // }
+
         dropPin("San Antonio, TX")
         dropPin("San Marcos, TX")
+
     });// END $DOCUMENT
 </script>
 </body>
