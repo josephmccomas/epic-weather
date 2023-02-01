@@ -50,56 +50,60 @@
     </div>
 </div>
 <div id="map" style="height: 400px; width: 600px"></div>
-</div>
 <script src='https://api.mapbox.com/mapbox-gl-js/v2.12.0/mapbox-gl.js'></script>
 <script>
-    $(document).ready(function () {
-        // Generates map on the page
-        mapboxgl.accessToken = MAPBOX_API_KEY;
-        let map = new mapboxgl.Map({
-            container: 'map',
-            style: 'mapbox://styles/mapbox/satellite-streets-v12',
-            zoom: 10,
-            center: [-98.4916, 29.4252]
+    (function () {
+        $(document).ready(function () {
+            // Generates map on the page
+            mapboxgl.accessToken = MAPBOX_API_KEY;
+            map = new mapboxgl.Map({
+                container: 'map',
+                style: 'mapbox://styles/mapbox/satellite-streets-v12',
+                zoom: 10,
+                center: [-98.4916, 29.4252]
+            });
+
+            // Retrieves lat/long coords for locations
+            // let coords;
+            function dropPin(search) {
+                coords = geocode(search, MAPBOX_API_KEY).then(function (result) {
+                    // console.log(result)
+                })
+                dropPinWithCoords(coords);
+            }
+            // Sets markers based on coordinates
+            function dropPinWithCoords() {
+                marker = new mapboxgl.Marker().setLngLat(coords).addTo(map);
+                forecast(coords, marker);
+            }
+
+            // Gets forecast data based on coordinates
+
+            function forecast() {
+                $.get("https://api.openweathermap.org/data/2.5/weather", {
+                        APPID: OPEN_WEATHER_APPID,
+                        lat: coords[1],
+                        lon: coords[0],
+                    }
+                ).done(function (data) {
+                    coords = data.coords;
+                    console.log(data.coords);
+                })
+                updateWeatherData(data);
+            }
+
+            // Updates weather data
+            function updateWeatherData(data) {
+                return fetch("https://api.openweathermap.org/data/2.5/forecast?lat=" + coords[1] + "&long=" + coords[0] + "&units=imperial&appid=" + OPEN_WEATHER_APPID)
+                    .then((response) => response.json())
+                    .then((data) => console.log(data))
+                    .catch((error) => console.log(error));
+            }
+
+            dropPin("San Antonio, TX");
+            dropPin("San Marcos, TX");
         });
-
-        // Retrieves lat/long coords for locations
-        function dropPin(search) {
-            geocode(search, MAPBOX_API_KEY).then(function (result) {
-                // console.log(result)
-            })
-        }
-
-        // Sets markers based on coordinates
-        function dropPinWithCoords(coords) {
-            const marker = new mapboxgl.Marker()
-                .setLngLat(coords)
-                .addTo(map)
-            forecast(coords, marker);
-        }
-
-        // Gets forecast data based on coordinates
-        function forecast(coords, marker) {
-            $.get("http://api.openweathermap.org/data/2.5/weather", {
-                APPID: OPEN_WEATHER_APPID,
-                lat: coords[1],
-                    lon: coords[0],
-                }
-            ).done(function (data) {
-                console.log(data)
-                // updateWeatherHTML(data);
-            })
-        }
-
-        // Updates weather data
-        // function updateWeatherHTML(forecastData) {
-        //
-        // }
-
-        dropPin("San Antonio, TX")
-        dropPin("San Marcos, TX")
-
-    });// END $DOCUMENT
+    })();// END $DOCUMENT
 </script>
 </body>
 </html>
